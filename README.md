@@ -1,3 +1,6 @@
+<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/db7f6ee4-5ef0-4953-b819-49c0e93b3162" />
+
+
 # 🌍 EARTH: The Planetary Intelligence Platform
 
 ![License](https://img.shields.io/badge/license-GPLv3-blue.svg) ![Python](https://img.shields.io/badge/python-3.11-yellow.svg) ![Status](https://img.shields.io/badge/status-Prototype-green.svg)
