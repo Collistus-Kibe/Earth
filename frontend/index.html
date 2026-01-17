@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EARTH PLATFORM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <style>
+        :root {
+            /* DARK MODE PALETTE */
+            --bg-body: #0B1120;
+            --bg-card: #151e32;
+            --bg-nav: #0B1120;
+            --bg-input: #1e293b;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --accent: #10b981; /* Green Accent */
+            
+            /* Gradients */
+            --grad-home: linear-gradient(90deg, #1e3c72 0%, #2a5298 50%, #10b981 100%);
+            --grad-ocean: linear-gradient(90deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            --grad-nature: linear-gradient(90deg, #134E5E 0%, #71B280 100%);
+            --grad-space: linear-gradient(90deg, #2b1055 0%, #7597de 100%);
+            
+            /* Status Colors */
+            --safe: #10b981; --ocean: #38bdf8; --warn: #fbbf24; --danger: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+        /* HEADER */
+        header { height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; border-bottom: 1px solid rgba(255,255,255,0.05); background: var(--bg-nav); }
+        .brand { font-weight: 700; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
+        .user-actions { display: flex; gap: 20px; color: var(--text-muted); align-items: center; }
+        .icon-btn { cursor: pointer; transition: color 0.2s; }
+        .icon-btn:hover { color: white; }
+
+        /* MAIN */
+        main { flex-grow: 1; overflow-y: auto; padding: 24px; position: relative; }
+        .view-section { display: none; animation: fadeUp 0.3s ease; }
+        .view-section.active { display: block; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* CARDS & DASHBOARD */
+        .hero-card { height: 260px; border-radius: 16px; padding: 30px; position: relative; display: flex; flex-direction: column; justify-content: center; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); }
+        .bg-home { background: var(--grad-home); }
+        .bg-ocean { background: var(--grad-ocean); }
+        .bg-nature { background: var(--grad-nature); }
+        .bg-space { background: var(--grad-space); }
+        
+        .hero-big-value { font-size: 5rem; font-weight: 800; line-height: 1; margin: 10px 0; text-shadow: 0 5px 20px rgba(0,0,0,0.2); }
+        .hero-label { font-size: 0.8rem; font-weight: 700; opacity: 0.9; letter-spacing: 1px; text-transform: uppercase; }
+        .hero-status { font-size: 1.8rem; font-weight: 700; }
+        .hero-desc { font-size: 1rem; opacity: 0.9; max-width: 600px; }
+
+        .section-title { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin: 24px 0 12px 0; text-transform: uppercase; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .stat-card { background: var(--bg-card); border-radius: 12px; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+        .stat-val { font-size: 1.1rem; font-weight: 700; margin-top: 5px; }
+        .chart-box { background: var(--bg-card); border-radius: 12px; padding: 20px; height: 220px; border: 1px solid rgba(255,255,255,0.05); }
+        
+        /* SETTINGS LAYOUT (MATCHING SCREENSHOT) */
+        .settings-container { display: grid; grid-template-columns: 250px 1fr; gap: 30px; height: 100%; }
+        .settings-sidebar { border-right: 1px solid rgba(255,255,255,0.05); padding-right: 20px; }
+        .settings-tab { padding: 12px 15px; cursor: pointer; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; border-radius: 8px; margin-bottom: 5px; transition: all 0.2s; }
+        .settings-tab:hover { background: rgba(255,255,255,0.05); color: white; }
+        .settings-tab.active { background: rgba(16, 185, 129, 0.1); color: var(--accent); border-left: 3px solid var(--accent); }
+        
+        .settings-panel { padding: 0 10px; }
+        .setting-group { background: var(--bg-card); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05); }
+        .setting-label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; }
+        .btn-toggle { background: var(--bg-input); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; flex: 1; text-align: center; font-weight: 500; }
+        .btn-toggle.active { background: rgba(16, 185, 129, 0.2); border-color: var(--accent); color: var(--accent); }
+        .flex-row { display: flex; gap: 15px; }
+
+        /* COLORS */
+        .txt-safe { color: var(--safe); text-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
+        .txt-ocean { color: var(--ocean); text-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
+        .txt-warn { color: var(--warn); } .txt-danger { color: var(--danger); }
+
+        /* NAV */
+        .bottom-nav { height: 80px; background: var(--bg-nav); border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-around; align-items: center; padding-bottom: 10px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 0.75rem; cursor: pointer; gap: 5px; }
+        .nav-item.active { color: white; }
+        .nav-item.active i { background: rgba(255,255,255,0.1); border-radius: 12px; padding: 4px 12px; }
+
+        /* UTILS */
+        #login-overlay { position: fixed; inset: 0; background: var(--bg-body); z-index: 9999; display: flex; justify-content: center; align-items: center; }
+        .login-box { background: var(--bg-card); padding: 40px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .btn-google { background: white; color: #111; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 20px; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div id="login-overlay">
+        <div class="login-box">
+            <h1>🌍 EARTH</h1>
+            <p style="color:var(--text-muted); margin-top:10px">Planetary Intelligence</p>
+            <button id="btn-login-google" class="btn-google">Sign in with Google</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="brand"><i class="material-icons-round">public</i> EARTH PLATFORM</div>
+        <div class="user-actions">
+            <i class="material-icons-round icon-btn" id="btn-settings-header" title="Settings">settings</i>
+            <i class="material-icons-round icon-btn" id="btn-logout" title="Logout">logout</i>
+        </div>
+    </header>
+
+    <main id="app-content" class="hidden">
+        <div id="view-dashboard" class="view-section active"></div>
+        <div id="view-ocean" class="view-section"></div>
+        <div id="view-nature" class="view-section"></div>
+        <div id="view-space" class="view-section"></div>
+        <div id="view-settings" class="view-section"></div>
+    </main>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active" id="nav-dashboard"><i class="material-icons-round">dashboard</i><span>Home</span></div>
+        <div class="nav-item" id="nav-ocean"><i class="material-icons-round">waves</i><span>Ocean</span></div>
+        <div class="nav-item" id="nav-nature"><i class="material-icons-round">eco</i><span>Nature</span></div>
+        <div class="nav-item" id="nav-space"><i class="material-icons-round">rocket_launch</i><span>Space</span></div>
+    </nav>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script type="module" src="app.js?v=12"></script>
+    <script type="module" src="dashboard.js?v=12"></script>
+</body>
+</html>

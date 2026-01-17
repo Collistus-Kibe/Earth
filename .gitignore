@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+env/
+venv/
+node_modules/
+.DS_Store
+
+# Secrets - DO NOT UPLOAD
+backend/earth-engine-key.json
+backend/firebase-service-account.json
+*.json
+.env

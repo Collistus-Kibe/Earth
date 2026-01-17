@@ -1,0 +1,31 @@
+# --- Core Framework & Server ---
+fastapi
+uvicorn[standard]
+gunicorn
+python-dotenv
+
+# --- Database & Auth ---
+sqlalchemy
+mysql-connector-python
+firebase-admin
+python-jose[cryptography]
+passlib[bcrypt]
+
+# --- Networking & Requests ---
+httpx
+
+# --- AI & Data Science (The Brain) ---
+scikit-learn
+pandas
+numpy
+google-generativeai
+
+# --- Geospatial & Satellite (The Eyes) ---
+earthengine-api
+google-auth
+
+# --- Astronomy (Space Tab) ---
+ephem
+
+# --- Messaging (The Ark Protocol) ---
+twilio
